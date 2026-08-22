@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Desired state for the public WaveHouse analytics demo at stats.bigconfig.space: ClickHouse, the WaveHouse gateway, and a live GitHub stats dashboard on one Vultr instance.">
+  <title>wavehouse-vultr — getcolors deployment</title>
+  <style>
+    :root{color-scheme:light;--ink:#1f2328;--muted:#59636e;--line:#d0d7de;--soft:#f6f8fa;--blue:#0969da;--green:#1a7f37}*{box-sizing:border-box}body{margin:0;color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:920px;margin:auto;padding:64px 28px 100px}h1{font-size:48px;line-height:1.05;margin:0}h2{margin-top:54px;padding-bottom:8px;border-bottom:1px solid var(--line)}.lead{font-size:20px;color:var(--muted);max-width:790px}code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}pre{padding:18px;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--soft)}:not(pre)>code{padding:.12em .35em;border-radius:5px;background:var(--soft)}a{color:var(--blue)}.eyebrow{color:var(--green);font-weight:700;letter-spacing:.08em}.callout{padding:16px 18px;border-left:4px solid var(--green);background:#dafbe1}@media(max-width:650px){main{padding-top:38px}h1{font-size:36px}}
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4VKP1WY4QJ"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-4VKP1WY4QJ',{page_title:'wavehouse-vultr — getcolors deployment'});</script>
+</head>
+<body><main>
+  <p class="eyebrow">DEPLOYMENT · VULTR · WAVEHOUSE DEMO</p>
+  <h1>wavehouse-vultr</h1>
+  <p class="lead">Desired state for the public WaveHouse analytics demo: the live GitHub stats dashboard for Wave-RF/WaveHouse, computed by a self-hosted WaveHouse + ClickHouse stack on one guarded Vultr instance.</p>
+
+  <div class="callout"><strong>See it live:</strong> <a href="https://stats.bigconfig.space">stats.bigconfig.space</a> — every number, chart, and event flows through the WaveHouse gateway; the feed streams over SSE as the anonymous read-only role.</div>
+
+  <h2>What is tracked here</h2>
+  <p><code>colors.yml</code> (the only editable desired state), the installed <a href="https://github.com/getcolors/wavehouse">wavehouse Package Skill</a> payload and lockfile, a root launcher copied from that payload, toolchain files, and documentation. Credentials live in gitignored <code>.envrc.private</code>; generated output in <code>.colors/</code> is never committed.</p>
+
+  <h2>Lifecycle</h2>
+  <pre><code>direnv allow
+./green build
+./green create --dry-run
+./green create</code></pre>
+  <p>Build and dry-run are credential-free. Real creation converges the instance, the proxied Cloudflare record, and the Compose stack, backfills GitHub history, starts the live poller, and ends with public HTTPS and data acceptance checks. Deletion stays guarded by <code>compute-prevent-destroy: true</code>.</p>
+
+  <h2>Source</h2>
+  <p><a href="https://github.com/getcolors/wavehouse-vultr">This deployment on GitHub</a> · <a href="https://github.com/getcolors/wavehouse">Package Skill source</a></p>
+</main></body>
+</html>

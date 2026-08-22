@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "package-wavehouse-green": {
+      "source": "getcolors/wavehouse",
+      "sourceType": "github",
+      "skillPath": "skills/package-wavehouse-green/SKILL.md",
+      "computedHash": "9e584070ce79c8bfa31a24e107351305e2d774208d3cb977ec19bc662e2e0d9f"
+    }
+  }
+}

@@ -1,0 +1,70 @@
+# Desired state for wavehouse-vultr. Non-secret values only.
+# Credentials belong in the gitignored .envrc.private as COLORS_PAR_* variables.
+# Never export COLORS_PAR_PROFILE: it selects this deployment's remote state.
+#
+# Required credentials:
+#   Vultr           COLORS_PAR_VULTR_API_KEY
+#   Cloudflare      COLORS_PAR_CLOUDFLARE_API_TOKEN
+#   state in R2     COLORS_PAR_R2_ACCESS_KEY_ID
+#                   COLORS_PAR_R2_SECRET_ACCESS_KEY
+#   GitHub poller   COLORS_PAR_WAVEHOUSE_GITHUB_TOKEN
+#                   (read-only, public-repo scope; used by backfill and the
+#                    60s poller on the server)
+
+profile: wavehouse-vultr
+workdir: .colors
+
+provider-compute: vultr
+provider-dns: cloudflare
+provider-backend: r2
+
+# Preserve this guard in committed desired state. Destruction requires an
+# explicitly authorized one-run override; never edit this flag to bypass it.
+compute-prevent-destroy: true
+
+# --- WaveHouse demo ---------------------------------------------------------
+
+# Public hostname for the dashboard; Caddy terminates TLS via Let's Encrypt
+# and serves the static page same-origin with the /v1 API.
+wavehouse-host: stats.bigconfig.space
+
+# GitHub repository whose activity the dashboard shows. Backfill loads its
+# history at create time; the poller service keeps it live afterwards.
+wavehouse-repo: Wave-RF/WaveHouse
+
+# Seconds between GitHub Events/Actions API polls on the server.
+wavehouse-poll-interval: 60
+
+# Container images the server runs. The gateway is the upstream dev image;
+# pin digests here if the demo should stop tracking upstream.
+wavehouse-image: ghcr.io/wave-rf/wavehouse:latest
+wavehouse-clickhouse-image: clickhouse/clickhouse-server:latest
+wavehouse-caddy-image: caddy:2-alpine
+
+# --- Vultr ------------------------------------------------------------------
+
+vultr-name: wavehouse-vultr
+vultr-region: ams
+# ClickHouse + NATS-backed gateway + Caddy want more than the 1 GiB demo
+# plan; 2 vCPU / 4 GiB is the smallest comfortable class.
+vultr-plan: vc2-2c-4gb
+# Vultr operating systems are numeric ids; 2284 is Ubuntu 24.04 LTS x64.
+vultr-os-id: 2284
+# The "wavehouse-vultr-disposable" key uploaded to the account; its private
+# half lives only in this deployment's disposable SSH agent and gitignored
+# .ssh/ directory (see .envrc). ForceNew: rotate by rebuilding.
+vultr-ssh-keys: 846b51c2-84f0-467f-8e43-603f68c06401
+
+# SSH is key-only and used for convergence and recovery. HTTP(S) is public so
+# Cloudflare and the acceptance checks can reach the dashboard.
+vultr-ssh-sources:
+  - 0.0.0.0/0
+  - "::/0"
+vultr-http-sources:
+  - 0.0.0.0/0
+  - "::/0"
+
+# --- R2 state backend -------------------------------------------------------
+
+r2-bucket: tofu-state-319271fed8bc6d2d9059362be1165f37-eu
+r2-endpoint: https://319271fed8bc6d2d9059362be1165f37.eu.r2.cloudflarestorage.com
