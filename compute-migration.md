@@ -27,4 +27,4 @@ application health.
 
 Outstanding live-operation prerequisites:
 
-- Before any real operation, configure ssh-private-key-path for the existing external provider key. No identity path was guessed and no key mode was changed.
+- Before any real operation, verify working operator or SSH-agent access for the existing external provider key, or set ssh-private-key-path to its matching identity. No identity path was guessed and no key mode was changed.
