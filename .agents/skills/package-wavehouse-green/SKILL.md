@@ -33,3 +33,5 @@ streaming over SSE.
 
 Real create ends with public HTTPS health, dashboard, and backfilled-data
 acceptance checks.
+
+Compute and SSH ownership are delegated to `colors-compute`. Omitted provider SSH settings use `~/.ssh/<profile>`; supplied account key references remain external. The package maintains the profile SSH alias with a locked updater and refuses foreign stanzas. R2/S3 compute states live under `<profile>/compute/`; an existing `<profile>/wavehouse-infrastructure.tfstate` requires reviewed migration before normal lifecycle commands.
