@@ -50,7 +50,7 @@
 ;; cannot resolve its own library says so rather than inventing a SHA or
 ;; silently falling back to whatever is lying around. `bb pin` refuses to stamp
 ;; a dirty or unpushed HEAD for the same reason.
-(def ^:private wavehouse-sha "585c23eb1dc5474fb5197087ece529f82c5b61e1")
+(def ^:private wavehouse-sha "68250017bbe588735485372bc5a1cbd01c11cdc4")
 
 (def ^:private wavehouse-git-url "https://github.com/getcolors/wavehouse.git")
 (def ^:private green-git-url "https://github.com/getcolors/green.git")
